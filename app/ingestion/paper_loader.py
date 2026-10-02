@@ -289,6 +289,21 @@ def ingest_paper(
     return paper
 
 
+# --------------------------------------------------------------------------
+# Private aliases
+#
+# PR #13 renamed these three helpers to underscore-prefixed names, on the
+# assumption they were internal. They are not: the repository's own tests
+# import them by their public names, so a straight rename breaks the suite.
+# Both spellings therefore resolve to the same function - the internal-only
+# intent of the rename is respected, and existing importers keep working.
+# --------------------------------------------------------------------------
+
+_extract_pdf_pages = extract_pdf_pages
+_extract_paper_metadata = extract_paper_metadata
+_parse_questions = parse_questions
+
+
 if __name__ == "__main__":
     import sys
 

@@ -384,3 +384,13 @@ def _blank_pdf_bytes() -> bytes:
         len(objects) + 1, xref,
     )
     return bytes(out)
+
+
+def test_both_helper_spellings_resolve_to_the_same_function():
+    """PR #13 renamed these helpers with a leading underscore; the repo's
+    own tests import the public names, so both must keep working."""
+    from app.ingestion import paper_loader as pl
+
+    assert pl._extract_pdf_pages is pl.extract_pdf_pages
+    assert pl._extract_paper_metadata is pl.extract_paper_metadata
+    assert pl._parse_questions is pl.parse_questions
