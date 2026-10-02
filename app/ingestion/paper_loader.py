@@ -7,7 +7,7 @@ from pypdf import PdfReader
 from app.models.loaders_models import Question, Paper
 
 # Extract the pages from the pdf
-def extract_pdf_pages(file_path: Path) -> list[list[str]]:
+def _extract_pdf_pages(file_path: Path) -> list[list[str]]:
     reader = PdfReader(str(file_path))
 
     pages = []
@@ -45,7 +45,7 @@ def extract_pdf_pages(file_path: Path) -> list[list[str]]:
 # Paper header metadata (subject/class/board) from the text layer, so PDF
 # ingestion produces the same Paper fields as image ingestion. Anything not
 # found stays None; values are never invented.
-def extract_paper_metadata(pages: list[list[str]]) -> dict:
+def _extract_paper_metadata(pages: list[list[str]]) -> dict:
     meta: dict = {}
 
     for lines in pages:
@@ -69,7 +69,7 @@ def extract_paper_metadata(pages: list[list[str]]) -> dict:
 
 
 # Parse questions from the text 
-def parse_questions(pages: list[list[str]]) -> list[Question]:
+def _parse_questions(pages: list[list[str]]) -> list[Question]:
     records = []
 
     current_section = None
@@ -284,11 +284,11 @@ def ingest_paper(file_path: Path) -> Paper:
 
     paper_id = f"pap_{fingerprint[:8]}"
 
-    pages = extract_pdf_pages(file_path)
+    pages = _extract_pdf_pages(file_path)
 
-    metadata = extract_paper_metadata(pages)
+    metadata = _extract_paper_metadata(pages)
 
-    questions = parse_questions(pages)
+    questions = _parse_questions(pages)
 
     sections = list(
         dict.fromkeys(
